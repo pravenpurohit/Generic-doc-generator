@@ -1,0 +1,27 @@
+project:
+  name: "Sample Project"
+  description: "A sample project for testing the docgen tool"
+
+include:
+  - "sample-scripts/**/*.sh"
+
+exclude:
+  - "node_modules/**"
+
+output:
+  directory: "_test-output"
+
+sourcePathMappings:
+  SCRIPTS_ROOT: "sample-scripts/"
+
+authored:
+  principles:
+    - "All scripts must be idempotent"
+    - "Fail fast on missing dependencies"
+  designDecisions:
+    - title: "Shell over Python"
+      rationale: "Shell scripts are portable and require no runtime installation"
+  moduleNarratives:
+    "sample-scripts/hooks":
+      summary: "Git hooks for enforcing code quality"
+      howItWorks: "Hooks are symlinked into .git/hooks during bootstrap"

@@ -528,7 +528,7 @@ async function main(): Promise<void> {
       const config = loadConfig(configPath);
       const rootDir = args.rootDir ?? dirname(configPath);
       const outputDir = args.outputDir ?? config.output?.directory ?? "docs";
-      const fullOutputDir = join(rootDir, outputDir);
+      const fullOutputDir = outputDir.startsWith("/") ? outputDir : join(rootDir, outputDir);
 
       const analysis = await runAnalysis(config, rootDir, args.verbose);
       writeAnalysisJson(analysis, fullOutputDir);
@@ -555,7 +555,7 @@ async function main(): Promise<void> {
       const config = loadConfig(configPath);
       const rootDir = args.rootDir ?? dirname(configPath);
       const outputDir = args.outputDir ?? config.output?.directory ?? "docs";
-      const fullOutputDir = join(rootDir, outputDir);
+      const fullOutputDir = outputDir.startsWith("/") ? outputDir : join(rootDir, outputDir);
 
       const analysisPath = join(fullOutputDir, "analysis.json");
       let analysis: AnalysisOutput;
@@ -581,7 +581,7 @@ async function main(): Promise<void> {
       const config = loadConfig(configPath);
       const rootDir = args.rootDir ?? dirname(configPath);
       const outputDir = args.outputDir ?? config.output?.directory ?? "docs";
-      const fullOutputDir = join(rootDir, outputDir);
+      const fullOutputDir = outputDir.startsWith("/") ? outputDir : join(rootDir, outputDir);
 
       // 1. Read analysis.json
       const analysisPath = join(fullOutputDir, "analysis.json");

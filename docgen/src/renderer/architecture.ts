@@ -10,6 +10,7 @@ export interface RenderContext {
 export interface RenderedFile {
   path: string;
   content: string;
+  rootRelative?: boolean;
 }
 
 /**
@@ -43,12 +44,20 @@ export function renderArchitectureOverview(ctx: RenderContext): RenderedFile {
   // Layer descriptions
   sections.push("\n## Architectural Layers\n");
   const sortedLayers = [...analysis.layers].sort((a, b) => b.level - a.level);
+
+  // Detect duplicate labels across all groups to disambiguate
+  const labelCounts = new Map<string, number>();
+  for (const group of analysis.groups) {
+    labelCounts.set(group.label, (labelCounts.get(group.label) ?? 0) + 1);
+  }
+
   for (const layer of sortedLayers) {
     sections.push(`### Layer ${layer.level}: ${layer.label}\n`);
     for (const groupId of layer.groups) {
       const group = analysis.groups.find((g) => g.id === groupId);
       if (group) {
-        sections.push(`- **${group.label}** (${group.entities.length} entities)`);
+        const displayLabel = (labelCounts.get(group.label) ?? 0) > 1 ? group.id : group.label;
+        sections.push(`- **${displayLabel}** (${group.entities.length} entities)`);
       }
     }
     sections.push("");

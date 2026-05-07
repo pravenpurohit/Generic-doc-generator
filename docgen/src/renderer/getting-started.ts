@@ -32,10 +32,13 @@ export function renderGettingStarted(ctx: RenderContext): RenderedFile | null {
     sections.push("## Key Concepts\n");
     const glossary = config.authored?.glossary ?? {};
     for (const concept of editorial.onboarding.keyConceptsToExplain) {
-      // Try to find a matching glossary entry (glossary key appears as substring in concept)
+      // Extract the key term (part before parenthetical) for matching
+      const keyTerm = concept.replace(/\s*\(.*\)\s*$/, "").trim();
+      // Match glossary keys using word-boundary match against the key term
       let definition: string | undefined;
       for (const [key, value] of Object.entries(glossary)) {
-        if (concept.toLowerCase().includes(key.toLowerCase())) {
+        const keyPattern = new RegExp(`(?:^|[\\s(])${key.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}(?:$|[\\s)])`, "i");
+        if (keyPattern.test(keyTerm) || keyTerm.toLowerCase() === key.toLowerCase()) {
           definition = value;
           break;
         }

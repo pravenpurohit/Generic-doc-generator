@@ -31,7 +31,7 @@ export function renderScriptCatalog(ctx: RenderContext): RenderedFile {
       const deps = script.fanOut;
       const desc = script.description ?? "";
       sections.push(
-        `| [${script.name}](${script.filePath}) | ${isEntry} | ${deps} | ${desc} |`,
+        `| [${script.name}](../${script.filePath}) | ${isEntry} | ${deps} | ${desc} |`,
       );
     }
     sections.push("");

@@ -101,7 +101,7 @@ export function renderDirectoryReadmes(ctx: RenderContext): RenderedFile[] {
       sections.push(`| ${entity.name} | ${entity.kind} | ${entity.importance} | ${desc} |`);
     }
 
-    files.push({ path: `${group.id}/README.generated.md`, content: sections.join("\n") });
+    files.push({ path: `${group.id}/README.generated.md`, content: sections.join("\n"), rootRelative: true });
   }
 
   return files;
